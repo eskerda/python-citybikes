@@ -78,7 +78,7 @@ class TestNetworks:
             (client.networks.near(100.0, 100.0), ['foo', 'bar', 'baz']),
         ]
         for nets, expected in battery:
-            assert [n['id'] for n in nets] == expected
+            assert [n['id'] for n, dist in nets] == expected
 
 class TestNetwork:
     @responses.activate
@@ -111,4 +111,4 @@ class TestNetwork:
             (network.stations.near(100.0, 100.0), [3, 2, 1]),
         ]
         for nets, expected in battery:
-            assert [n['id'] for n in nets] == expected
+            assert [n['id'] for n, dist in nets] == expected

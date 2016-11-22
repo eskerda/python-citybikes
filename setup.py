@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 from setuptools import setup, find_packages
@@ -6,15 +8,10 @@ with open('citybikes/__init__.py', 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         fd.read(), re.MULTILINE).group(1)
 
-with open('README.rst', 'r', encoding='utf-8') as f:
+with open('README.rst', 'r') as f:
     readme = f.read()
-with open('HISTORY.rst', 'r', encoding='utf-8') as f:
+with open('HISTORY.rst', 'r') as f:
     history = f.read()
-
-with open('requirements.txt', 'r', encoding='utf-8') as f:
-    requirements = f.read().splitlines()
-with open('tests/requirements.txt', 'r', encoding='utf-8') as f:
-    tests_requirements = f.read().splitlines()
 
 setup(
     name='python-citybikes',
@@ -25,9 +22,15 @@ setup(
     author_email='eskerda@gmail.com',
     url='http://github.com/eskerda/python-citybikes',
     packages=find_packages(exclude=('tests', 'tests.*')),
-    install_requires=requirements,
-    tests_require=tests_requirements,
-    keywords='Citybikes api.citybik.es',
+    install_requires=[
+        'requests',
+        'six',
+    ],
+    tests_require=[
+        'pytest',
+        'responses',
+    ],
+    keywords='Citybikes api.citybik.es bike sharing',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

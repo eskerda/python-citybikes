@@ -38,9 +38,11 @@ class TestDistanceSort:
     def test_eq(self):
         sorted_points = dist_sort([0.0, 0.0], self.points,
                                   lambda p: (p[0], p[1]))
-        assert self.points == list(sorted_points)
+        sorted_points = [latlng for latlng, dist in sorted_points]
+        assert self.points == sorted_points
 
     def test_sort(self):
         sorted_points = dist_sort([10.0, 10.0], self.points,
                                   lambda p: (p[0], p[1]))
-        assert list(reversed(self.points)) == list(sorted_points)
+        sorted_points = [latlng for latlng, dist in sorted_points]
+        assert list(reversed(self.points)) == sorted_points

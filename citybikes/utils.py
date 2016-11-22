@@ -1,5 +1,5 @@
 from math import hypot
-import itertools
+
 
 def distance(xy, xy2):
     """ Gets euclidian distance between two pairs of points (x, y)
@@ -19,8 +19,7 @@ def dist_sort(xy, locations, getter):
     :return: list of locations sorted by distance to x, y
 
     """
-    res = sorted(
+    return sorted(
         map(lambda loc: [loc, distance(xy, getter(loc))], locations),
-        key=lambda loc_dst: loc_dst.pop(-1)
+        key=lambda locdst: locdst[1]
     )
-    return itertools.chain(*res)
