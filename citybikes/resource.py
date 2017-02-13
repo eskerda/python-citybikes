@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+import json
 from six.moves.urllib.parse import urljoin
 from collections import MutableMapping
 
@@ -67,3 +69,7 @@ class AbstractResource(Resource):
 
     def request(self, *args, **kwargs):
         return self.parent.request(*args, **kwargs)
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        return o.data

@@ -1,5 +1,9 @@
 History
 =======
+0.1.3 (2017-02-13)
+------------------
+* Add JSON Encoder for resources
+
 0.1.1 (2016-11-22)
 ------------------
 * Improve docs

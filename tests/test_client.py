@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import json
 
 import responses
 
@@ -80,6 +81,13 @@ class TestNetworks:
         for nets, expected in battery:
             assert [n['id'] for n, dist in nets] == expected
 
+    @responses.activate
+    def test_network_json(self):
+        responses.add(responses.GET, 'https://api.citybik.es/v2/networks',
+                      json=mockresponses.networks)
+        client = citybikes.Client()
+        assert json.dumps(client.networks, cls=citybikes.resource.JSONEncoder)
+
 class TestNetwork:
     @responses.activate
     def test_network_by_uid(self):
@@ -112,3 +120,11 @@ class TestNetwork:
         ]
         for nets, expected in battery:
             assert [n['id'] for n, dist in nets] == expected
+
+    @responses.activate
+    def test_network_json(self):
+        responses.add(responses.GET, 'https://api.citybik.es/v2/networks/foo',
+                      json=mockresponses.network)
+        client = citybikes.Client()
+        network = citybikes.Network(client, uid='foo')
+        assert json.dumps(network, cls=citybikes.resource.JSONEncoder)
