@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
 import asyncio
 import aiohttp
 from six.moves.urllib.parse import urljoin
@@ -57,9 +56,8 @@ class Resource(MutableMapping):
     @asyncio.coroutine
     def async_request(self, _path=None, **kwargs):
         kwargs['method'] = 'GET'
-        response = yield from self.client.async_request(
+        data = yield from self.client.async_request(
             urljoin(self.url, _path), **kwargs)
-        data = yield from response.json()
         if self.resource_wrap:
             data = data[self.resource_wrap]
         self._data.update(data)
@@ -78,8 +76,3 @@ class AbstractResource(Resource):
 
     def request(self, *args, **kwargs):
         return self.parent.request(*args, **kwargs)
-
-
-class JSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        return o.data

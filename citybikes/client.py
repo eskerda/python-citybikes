@@ -27,8 +27,9 @@ class Client(object):
     def async_request(self, url, **kwargs):
         kwargs['url'] = url
         with aiohttp.ClientSession(loop=self.loop, headers=self.headers) as session:
-            response = yield from session.request(**kwargs)
-        return response
+            encoded_response = yield from session.request(**kwargs)
+            json_response = yield from encoded_response.json()
+        return json_response
 
 
 class Network(Resource):
