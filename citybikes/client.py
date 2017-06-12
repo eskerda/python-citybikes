@@ -17,7 +17,7 @@ class Client(object):
         self.headers = {
             'User-Agent': user_agent or self.USER_AGENT
         }
-        self.loop = loop
+        self.loop = loop or asyncio.get_event_loop()
         self.networks = Networks(self)
 
     def request(self, url, **kwargs):
@@ -26,9 +26,8 @@ class Client(object):
     @asyncio.coroutine
     def async_request(self, url, **kwargs):
         kwargs['url'] = url
-        session = aiohttp.ClientSession(loop=self.loop, headers=self.headers)
-        response = yield from self.session.request(**kwargs)
-        session.release()
+        with aiohttp.ClientSession(loop=self.loop, headers=self.headers) as session:
+            response = yield from session.request(**kwargs)
         return response
 
 

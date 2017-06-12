@@ -51,13 +51,15 @@ class Resource(MutableMapping):
         self.data[key] = value
 
     def request(self, _path=None, **kwargs):
-        asyncio.wait(self.async_request(_path, **kwargs))
+        self.client.loop.run_until_complete(self.async_request(_path,
+            **kwargs))
 
     @asyncio.coroutine
     def async_request(self, _path=None, **kwargs):
         kwargs['method'] = 'GET'
-        data = yield from self.client.async_request(urljoin(self.url, _path),
-                                                    **kwargs).json()
+        response = yield from self.client.async_request(
+            urljoin(self.url, _path), **kwargs)
+        data = yield from response.json()
         if self.resource_wrap:
             data = data[self.resource_wrap]
         self._data.update(data)
@@ -76,6 +78,7 @@ class AbstractResource(Resource):
 
     def request(self, *args, **kwargs):
         return self.parent.request(*args, **kwargs)
+
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
