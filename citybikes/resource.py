@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 import asyncio
 import aiohttp
 from six.moves.urllib.parse import urljoin
@@ -76,3 +77,8 @@ class AbstractResource(Resource):
 
     def request(self, *args, **kwargs):
         return self.parent.request(*args, **kwargs)
+
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        return o.data
