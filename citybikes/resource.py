@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import json
+import asyncio
+import aiohttp
 from six.moves.urllib.parse import urljoin
 from collections import MutableMapping
 
@@ -49,8 +51,13 @@ class Resource(MutableMapping):
         self.data[key] = value
 
     def request(self, _path=None, **kwargs):
+        asyncio.wait(self.async_request(_path, **kwargs))
+
+    @asyncio.coroutine
+    def async_request(self, _path=None, **kwargs):
         kwargs['method'] = 'GET'
-        data = self.client.request(urljoin(self.url, _path), **kwargs).json()
+        data = yield from self.client.async_request(urljoin(self.url, _path),
+                                                    **kwargs).json()
         if self.resource_wrap:
             data = data[self.resource_wrap]
         self._data.update(data)
