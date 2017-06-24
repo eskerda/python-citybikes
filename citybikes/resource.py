@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import json
+import asyncio
+import aiohttp
 from six.moves.urllib.parse import urljoin
 from collections import MutableMapping
 
@@ -21,6 +23,13 @@ class Resource(MutableMapping):
     def data(self):
         if not self.is_complete:
             self.request()
+        return self._data
+
+    @asyncio.coroutine
+    @property
+    def async_data(self):
+        if not self.is_complete:
+            yield from self.async_request()
         return self._data
 
     @property
@@ -49,8 +58,22 @@ class Resource(MutableMapping):
         self.data[key] = value
 
     def request(self, _path=None, **kwargs):
+        if not self.client.loop:
+            try:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(self.async_request(_path, **kwargs))
+            finally:
+                loop.close()
+        else:
+            asyncio.run_coroutine_threadsafe(self.async_request(_path,
+                **kwargs), self.client.loop).result()
+
+    @asyncio.coroutine
+    def async_request(self, _path=None, **kwargs):
         kwargs['method'] = 'GET'
-        data = self.client.request(urljoin(self.url, _path), **kwargs).json()
+        data = yield from self.client.async_request(
+            urljoin(self.url, _path), **kwargs)
         if self.resource_wrap:
             data = data[self.resource_wrap]
         self._data.update(data)
@@ -69,6 +92,7 @@ class AbstractResource(Resource):
 
     def request(self, *args, **kwargs):
         return self.parent.request(*args, **kwargs)
+
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):

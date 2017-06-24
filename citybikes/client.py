@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import requests
+import asyncio
+import aiohttp
 
 from citybikes import __version__ as _version
 from citybikes.resource import AbstractResource, Resource
@@ -11,18 +12,24 @@ class Client(object):
     DEFAULT_ENDPOINT = 'https://api.citybik.es/'
     USER_AGENT = 'python-citybikes/{version}'.format(version=_version)
 
-    def __init__(self, endpoint=None, user_agent=None):
+    def __init__(self, endpoint=None, user_agent=None, loop=None):
         self.endpoint = endpoint or self.DEFAULT_ENDPOINT
-        self.user_agent = user_agent or self.USER_AGENT
-        self.session = requests.session()
-        self.session.headers.update({
-            'User-Agent': self.USER_AGENT,
-        })
+        self.headers = {
+            'User-Agent': user_agent or self.USER_AGENT
+        }
+        self.loop = loop
         self.networks = Networks(self)
 
     def request(self, url, **kwargs):
+        return asyncio.wait(self.async_request(url, **kwargs))
+
+    @asyncio.coroutine
+    def async_request(self, url, **kwargs):
         kwargs['url'] = url
-        return self.session.request(**kwargs)
+        with aiohttp.ClientSession(loop=self.loop, headers=self.headers) as session:
+            encoded_response = yield from session.request(**kwargs)
+            json_response = yield from encoded_response.json()
+        return json_response
 
 
 class Network(Resource):
