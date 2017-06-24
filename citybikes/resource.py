@@ -25,6 +25,13 @@ class Resource(MutableMapping):
             self.request()
         return self._data
 
+    @asyncio.coroutine
+    @property
+    def async_data(self):
+        if not self.is_complete:
+            yield from self.async_request()
+        return self._data
+
     @property
     def is_complete(self):
         if not self._data:
@@ -51,10 +58,13 @@ class Resource(MutableMapping):
         self.data[key] = value
 
     def request(self, _path=None, **kwargs):
-        if not self.client.loop.is_running():
-            self.client.loop.run_until_complete(
-                self.async_request(_path, **kwargs))
-            self.client.loop.close()
+        if not self.client.loop:
+            try:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(self.async_request(_path, **kwargs))
+            finally:
+                loop.close()
         else:
             asyncio.run_coroutine_threadsafe(self.async_request(_path,
                 **kwargs), self.client.loop).result()

@@ -17,7 +17,7 @@ class Client(object):
         self.headers = {
             'User-Agent': user_agent or self.USER_AGENT
         }
-        self.loop = loop or asyncio.get_event_loop()
+        self.loop = loop
         self.networks = Networks(self)
 
     def request(self, url, **kwargs):
