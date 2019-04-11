@@ -88,6 +88,7 @@ class TestNetworks:
         client = citybikes.Client()
         assert json.dumps(client.networks, cls=citybikes.resource.JSONEncoder)
 
+
 class TestNetwork:
     @responses.activate
     def test_network_by_uid(self):
