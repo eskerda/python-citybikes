@@ -15,7 +15,7 @@ matrix:
 install:
   - pip install -U pip
   - pip install -e .
-  - pip install -U flake8 pytest pytest-cov
+  - pip install -U codecov flake8 pytest pytest-cov
 
 script:
   # Unit tests
@@ -23,3 +23,6 @@ script:
 
   # Static analysis
   - flake8 --statistics --count
+
+after_success:
+  - codecov
