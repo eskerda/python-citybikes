@@ -2,7 +2,12 @@
 
 import json
 from six.moves.urllib.parse import urljoin
-from collections import MutableMapping
+try:
+    # Python 3
+    from collections.abc import MutableMapping
+except ImportError:
+    # Python 2.7
+    from collections import MutableMapping
 
 
 class Resource(MutableMapping):
