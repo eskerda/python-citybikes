@@ -20,7 +20,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author='Lluís Esquerda',
     author_email='eskerda@gmail.com',
-    url='http://github.com/eskerda/python-citybikes',
+    url='https://github.com/eskerda/python-citybikes',
     packages=find_packages(exclude=('tests', 'tests.*')),
     install_requires=[
         'requests',
