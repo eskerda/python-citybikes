@@ -1,5 +1,9 @@
 History
 =======
+0.1.4 (2019-07-26)
+------------------
+* Fix python 2 compatibility
+
 0.1.3 (2017-02-13)
 ------------------
 * Add JSON Encoder for resources
