@@ -1,5 +1,10 @@
 History
 =======
+0.2.0 (2021-02-07)
+------------------
+* Accept headers on client init
+* Remove user-agent argument (superseded by headers)
+
 0.1.4 (2019-07-26)
 ------------------
 * Fix python 2 compatibility

@@ -18,23 +18,28 @@ class TestClient:
     def test_defaults(self):
         client = citybikes.Client()
         assert client.endpoint == client.DEFAULT_ENDPOINT
-        assert client.user_agent == client.USER_AGENT
         client.networks
 
     def test_custom(self):
         client = citybikes.Client(
             endpoint='http://foobar.com',
-            user_agent='Walrus 9000'
+            headers={"User-Agent": "Walrus 9000"},
         )
         assert client.endpoint == 'http://foobar.com'
-        assert client.user_agent == 'Walrus 9000'
+
+    @responses.activate
+    def test_default_user_agent(self):
+        responses.add(responses.GET, 'http://example.com')
+        client = citybikes.Client()
+        resp = client.request('http://example.com', method='GET')
+        assert client.USER_AGENT in resp.request.headers['User-Agent']
 
     @responses.activate
     def test_user_agent(self):
         responses.add(responses.GET, 'http://example.com')
-        client = citybikes.Client()
+        client = citybikes.Client(headers={"User-Agent": "foobar"})
         resp = client.request('http://example.com', method='GET')
-        assert client.user_agent in resp.request.headers['User-Agent']
+        assert "foobar" in resp.request.headers['User-Agent']
 
     @responses.activate
     def test_requests_saved(self):

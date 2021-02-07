@@ -11,13 +11,15 @@ class Client(object):
     DEFAULT_ENDPOINT = 'https://api.citybik.es/'
     USER_AGENT = 'python-citybikes/{version}'.format(version=_version)
 
-    def __init__(self, endpoint=None, user_agent=None):
+    def __init__(self, endpoint=None, headers=None):
         self.endpoint = endpoint or self.DEFAULT_ENDPOINT
-        self.user_agent = user_agent or self.USER_AGENT
+        headers = headers or {}
+
+        if "user-agent" not in (k.lower() for k in headers):
+            headers["user-agent"] = self.USER_AGENT
+
         self.session = requests.session()
-        self.session.headers.update({
-            'User-Agent': self.USER_AGENT,
-        })
+        self.session.headers.update(headers)
         self.networks = Networks(self)
 
     def request(self, url, **kwargs):
