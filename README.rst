@@ -24,7 +24,7 @@ useful to projects consuming the API.
 Installation
 ------------
 
-.. code-block::
+.. code-block:: sh
 
     $ pip install python-citybikes
 
@@ -32,14 +32,14 @@ Usage
 -----
 First instantiate a client
 
-.. code-block::
+.. code-block:: python
 
     >>>> import citybikes
     >>>> client = citybikes.Client()
 
 Get the full list of networks
 
-.. code-block::
+.. code-block:: python
 
     >>>> networks = list(client.networks)
     >>>> len(networks)
@@ -51,7 +51,7 @@ Get the full list of networks
 
 Get stations from a network
 
-.. code-block::
+.. code-block:: python
 
     >>>> len(networks[0].stations)
     16
@@ -64,7 +64,7 @@ Get stations from a network
 
 Instantiate a network by id directly
 
-.. code-block::
+.. code-block:: python
 
     >>>> bicing = citybikes.Network(client, uid='bicing')
     >>>> bicing['name']
@@ -74,7 +74,7 @@ Instantiate a network by id directly
 
 Get a network ordered by distance to lat, lng
 
-.. code-block::
+.. code-block:: python
 
     >>>> # Lets get the nearest network to NY lat, lng
     >>>> net, dist = next(iter(client.networks.near(40.7128, -74.0059)))
@@ -87,7 +87,7 @@ Get a network ordered by distance to lat, lng
 
 Get stations from a network ordered by distance to lat, lng
 
-.. code-block::
+.. code-block:: python
 
     >>>> # Now, get stations ordered by distance to Manhattan center
     >>>> sts = net.stations.near(40.7831, -73.9712)
