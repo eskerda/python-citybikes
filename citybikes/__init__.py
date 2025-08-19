@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __title__ = 'python-citybikes'
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 
 __all__ = ['Client', 'Network', 'Station']
 
