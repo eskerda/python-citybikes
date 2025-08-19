@@ -1,5 +1,10 @@
 History
 =======
+0.3.0 (2025-08-19)
+------------------
+* Add asyncio client
+* Nuke python 2 support
+
 0.2.0 (2021-02-07)
 ------------------
 * Accept headers on client init

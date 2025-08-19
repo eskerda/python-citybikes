@@ -56,6 +56,8 @@ network = {
                 "id": 1,
                 "latitude": 10.401,
                 "longitude": 2.1,
+                "name": "Foo 1",
+                "extra": {"some_field": 1,},
             },
             {
                 "empty_slots": 10,
@@ -63,6 +65,8 @@ network = {
                 "id": 2,
                 "latitude": 20.402,
                 "longitude": 2.2,
+                "name": "Foo 2",
+                "extra": {"some_field": 2,},
             },
             {
                 "empty_slots": 3,
@@ -70,6 +74,8 @@ network = {
                 "id": 3,
                 "latitude": 30.403,
                 "longitude": 2.3,
+                "name": "Foo 3",
+                "extra": {"some_field": 3,},
             },
         ]
     }

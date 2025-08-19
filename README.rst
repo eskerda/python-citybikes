@@ -1,7 +1,5 @@
 python-citybikes
 ================
-.. image:: https://travis-ci.org/eskerda/python-citybikes.svg?branch=master
-    :target: https://travis-ci.org/eskerda/python-citybikes
 
 `python-citybikes` is a python client for the `Citybikes API`_.
 

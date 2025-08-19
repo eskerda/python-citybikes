@@ -1,0 +1,47 @@
+[project]
+name = "python-citybikes"
+dynamic = ["version"]
+description = "Client interface for the Citybikes API"
+readme = "README.rst"
+requires-python = ">=3.9"
+dependencies = [
+    "aiohttp",
+    "requests",
+]
+license = "MIT"
+license-files = ["LICENSE.txt"]
+
+keywords = [
+    "Citybikes",
+    "api.citybik.es",
+    "bike sharing",
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://citybik.es"
+Documentation = "https://docs.citybik.es"
+Source = "https://github.com/eskerda/python-citybikes"
+Tracker = "https://github.com/eskerda/python-citybikes/issues"
+
+[dependency-groups]
+dev = [
+    "pytest-asyncio",
+    "pytest",
+    "responses",
+    "pytest-aiohttp",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "citybikes.__version__"}
