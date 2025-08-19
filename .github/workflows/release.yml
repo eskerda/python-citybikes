@@ -1,0 +1,57 @@
+name: Release Python Package
+
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:
+      - '**'
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      # uv is used because pip still does not support dependency-groups
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U ruff uv
+        pip install -e .
+        uv export --only-group=dev | pip install -r /dev/stdin
+
+    - name: lint
+      run: ruff check --output-format=github --target-version=py39
+
+    - name: test
+      run: pytest -vv
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [unit]
+    environment: release
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: pip
+        cache-dependency-path: '**/pyproject.toml'
+    - name: Install dependencies
+      run: |
+        pip install .
+        pip install setuptools wheel build
+    - name: Build
+      run: python -m build
+    - name: Publish
+      uses: pypa/gh-action-pypi-publish@release/v1
