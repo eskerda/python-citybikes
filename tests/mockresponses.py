@@ -58,6 +58,7 @@ network = {
                 "longitude": 2.1,
                 "name": "Foo 1",
                 "extra": {"some_field": 1,},
+                "timestamp": "2025-08-21T14:00:23.164005+00:00Z",
             },
             {
                 "empty_slots": 10,
@@ -67,6 +68,7 @@ network = {
                 "longitude": 2.2,
                 "name": "Foo 2",
                 "extra": {"some_field": 2,},
+                "timestamp": "2025-08-21T14:00:23.164005+00:00Z",
             },
             {
                 "empty_slots": 3,
@@ -76,6 +78,7 @@ network = {
                 "longitude": 2.3,
                 "name": "Foo 3",
                 "extra": {"some_field": 3,},
+                "timestamp": "2025-08-21T14:00:23.164005+00:00Z",
             },
         ]
     }

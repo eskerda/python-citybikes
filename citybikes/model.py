@@ -15,6 +15,7 @@ class Station(AllowExtra):
     latitude: float
     longitude: float
     extra: dict
+    timestamp: str
     free_bikes: Optional[int] = None
     empty_slots: Optional[int] = None
 
