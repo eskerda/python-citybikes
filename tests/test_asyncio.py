@@ -2,12 +2,28 @@ import pytest
 
 from . import mockresponses
 
+from citybikes.asyncio import Client
 from citybikes.model import Network
 
 @pytest.mark.asyncio
 async def test_client(client):
     resp = await client.request(client.endpoint + 'v2/networks')
     assert resp
+
+@pytest.mark.asyncio
+async def test_default_ua():
+    foo = Client()
+    assert foo.session.headers['user-agent'] == Client.USER_AGENT
+
+@pytest.mark.asyncio
+async def test_given_ua():
+    foo = Client(user_agent="hello world")
+    assert foo.session.headers['user-agent'] == "hello world"
+
+@pytest.mark.asyncio
+async def test_headers_preference():
+    foo = Client(user_agent="hello world", headers={'user-agent': 'foo'})
+    assert foo.session.headers['user-agent'] == "foo"
 
 @pytest.mark.asyncio
 async def test_networks(client):
