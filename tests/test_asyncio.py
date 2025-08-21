@@ -1,3 +1,5 @@
+from unittest.mock import Mock, patch
+
 import pytest
 
 from . import mockresponses
@@ -19,6 +21,15 @@ async def test_default_ua():
 async def test_given_ua():
     foo = Client(user_agent="hello world")
     assert foo.session.headers['user-agent'] == "hello world"
+
+@pytest.mark.asyncio
+async def test_arbitrary_session_args():
+    mock = Mock()
+    session_args = {"foo": 42, "bar": 33}
+    with patch('aiohttp.ClientSession', mock):
+        Client(user_agent="hello world", ** session_args)
+        args, kwargs = mock.call_args
+        assert session_args.items() <= kwargs.items()
 
 @pytest.mark.asyncio
 async def test_headers_preference():

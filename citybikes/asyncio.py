@@ -72,11 +72,11 @@ class Client:
     _networks_list = None
     _networks = None
 
-    def __init__(self, endpoint=None, headers=None, user_agent=None):
+    def __init__(self, endpoint=None, headers=None, user_agent=None, **kwargs):
         self.endpoint = endpoint or self.DEFAULT_ENDPOINT
         headers = headers or {}
         headers.setdefault("user-agent", user_agent or Client.USER_AGENT)
-        self.session = aiohttp.ClientSession(headers=headers)
+        self.session = aiohttp.ClientSession(headers=headers, **kwargs)
         self._networks = {}
 
     async def request(self, url, method="GET", **kwargs):
